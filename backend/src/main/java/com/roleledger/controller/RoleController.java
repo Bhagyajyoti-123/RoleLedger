@@ -2,22 +2,20 @@ package com.roleledger.controller;
 
 import com.roleledger.entity.Role;
 import com.roleledger.service.RoleService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/roles")
-@RequiredArgsConstructor
-@CrossOrigin
+@CrossOrigin(origins = "*")
 public class RoleController {
 
     private final RoleService roleService;
 
-    @PostMapping
-    public Role createRole(@RequestParam String name) {
-        return roleService.createRole(name);
+    // ✅ Constructor Injection (FIXED)
+    public RoleController(RoleService roleService) {
+        this.roleService = roleService;
     }
 
     @GetMapping
@@ -26,8 +24,7 @@ public class RoleController {
     }
 
     @DeleteMapping("/{id}")
-    public String deleteRole(@PathVariable Long id) {
+    public void deleteRole(@PathVariable Long id) {
         roleService.deleteRole(id);
-        return "Role deleted successfully";
     }
 }

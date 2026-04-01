@@ -2,22 +2,21 @@ package com.roleledger.service;
 
 import com.roleledger.entity.Role;
 import com.roleledger.repository.RoleRepository;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class RoleService {
 
-    private final RoleRepository roleRepository;
+    @Autowired
+    private RoleRepository roleRepository;
 
-    public Role createRole(String name) {
-        if (roleRepository.findByName(name).isPresent()) {
-            throw new RuntimeException("Role already exists");
-        }
-        return roleRepository.save(Role.builder().name(name).build());
+    public Role createRole(String roleName) {
+        Role role = new Role();
+        role.setName(roleName);
+        return roleRepository.save(role);
     }
 
     public List<Role> getAllRoles() {
@@ -26,5 +25,10 @@ public class RoleService {
 
     public void deleteRole(Long id) {
         roleRepository.deleteById(id);
+    }
+
+    public Role getRoleByName(String name) {
+        return roleRepository.findByName(name)
+                .orElseThrow(() -> new RuntimeException("Role not found"));
     }
 }

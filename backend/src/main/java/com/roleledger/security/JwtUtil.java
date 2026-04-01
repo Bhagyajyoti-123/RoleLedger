@@ -2,6 +2,7 @@ package com.roleledger.security;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -10,23 +11,26 @@ import java.util.Date;
 @Component
 public class JwtUtil {
 
-    private final String SECRET = "roleledgersecretkeyroleledgersecretkey123456";
-    private final long EXPIRATION = 86400000; // 1 day
+    @Value("${jwt.secret}")
+    private String secret;
+
+    private final long EXPIRATION = 86400000; // 24 hours
 
     private Key getSignKey() {
-        return Keys.hmacShaKeyFor(SECRET.getBytes());
+        byte[] keyBytes = secret.getBytes();
+        return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String generateToken(String username) {
+    public String generateToken(String email) {
         return Jwts.builder()
-                .setSubject(username)
+                .setSubject(email)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION))
                 .signWith(getSignKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    public String extractUsername(String token) {
+    public String extractEmail(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(getSignKey())
                 .build()
