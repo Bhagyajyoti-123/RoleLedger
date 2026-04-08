@@ -32,9 +32,12 @@ const drawerWidth = 240;
 const Layout = ({ children }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
+
   const navigate = useNavigate();
   const location = useLocation();
-  const { logout } = useAuth(); // ✅ FIXED (removed user)
+
+  // ✅ FIXED: removed unused "user"
+  const { logout } = useAuth();
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -63,10 +66,11 @@ const Layout = ({ children }) => {
   const drawer = (
     <div>
       <Toolbar>
-        <Typography variant="h6" noWrap component="div">
+        <Typography variant="h6" noWrap>
           RoleLedger
         </Typography>
       </Toolbar>
+
       <List>
         {menuItems.map((item) => (
           <ListItem key={item.text} disablePadding>
@@ -89,6 +93,8 @@ const Layout = ({ children }) => {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
+
+      {/* Top AppBar */}
       <AppBar
         position="fixed"
         sx={{
@@ -131,6 +137,7 @@ const Layout = ({ children }) => {
         </Toolbar>
       </AppBar>
 
+      {/* Sidebar */}
       <Box component="nav" sx={{ width: { sm: drawerWidth } }}>
         <Drawer
           variant="temporary"
@@ -156,6 +163,7 @@ const Layout = ({ children }) => {
         </Drawer>
       </Box>
 
+      {/* Main Content */}
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <Toolbar />
         {children}
