@@ -34,7 +34,7 @@ const Layout = ({ children }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
-  const { user, logout } = useAuth();
+  const { logout } = useAuth(); // ✅ FIXED (removed user)
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -99,31 +99,24 @@ const Layout = ({ children }) => {
         <Toolbar>
           <IconButton
             color="inherit"
-            aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
             sx={{ mr: 2, display: { sm: 'none' } }}
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
+
+          <Typography sx={{ flexGrow: 1 }}>
             AI-Powered Placement Tracker
           </Typography>
-          <IconButton
-            size="large"
-            edge="end"
-            aria-label="account menu"
-            aria-controls="account-menu"
-            aria-haspopup="true"
-            onClick={handleMenuClick}
-            color="inherit"
-          >
+
+          <IconButton onClick={handleMenuClick} color="inherit">
             <Avatar sx={{ width: 32, height: 32 }}>
               <AccountCircle />
             </Avatar>
           </IconButton>
+
           <Menu
-            id="account-menu"
             anchorEl={anchorEl}
             open={Boolean(anchorEl)}
             onClose={handleMenuClose}
@@ -137,49 +130,33 @@ const Layout = ({ children }) => {
           </Menu>
         </Toolbar>
       </AppBar>
-      <Box
-        component="nav"
-        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
-      >
+
+      <Box component="nav" sx={{ width: { sm: drawerWidth } }}>
         <Drawer
           variant="temporary"
           open={mobileOpen}
           onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true,
-          }}
           sx={{
             display: { xs: 'block', sm: 'none' },
-            '& .MuiDrawer-paper': {
-              boxSizing: 'border-box',
-              width: drawerWidth,
-            },
+            '& .MuiDrawer-paper': { width: drawerWidth },
           }}
         >
           {drawer}
         </Drawer>
+
         <Drawer
           variant="permanent"
+          open
           sx={{
             display: { xs: 'none', sm: 'block' },
-            '& .MuiDrawer-paper': {
-              boxSizing: 'border-box',
-              width: drawerWidth,
-            },
+            '& .MuiDrawer-paper': { width: drawerWidth },
           }}
-          open
         >
           {drawer}
         </Drawer>
       </Box>
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          p: 3,
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-        }}
-      >
+
+      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <Toolbar />
         {children}
       </Box>
