@@ -14,9 +14,9 @@ It implements secure authentication and role-based access control (RBAC).
 - MySQL
 
 ### Frontend
-- Angular
-- TypeScript
-- Bootstrap / CSS
+- React
+- Material UI
+- Chart.js / Recharts
 
 ### Database
 - MySQL
@@ -61,7 +61,7 @@ RoleLedger
 ```
 cd frontend
 npm install
-ng serve
+npm start
 ```
 
 ---
